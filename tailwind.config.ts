@@ -8,11 +8,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      colors:{
+        'orange':'#ff6700',
+        'black-one':'#121212',
+        'black-two':'hsl(100, 100%, 100%, 0.1)',
+        'beige':'#c0c0c0',
+        'white':'#ebebeb'
       },
+      fontFamily:{
+        Cubano:"Cubano"
+      }
     },
   },
   plugins: [],
