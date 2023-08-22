@@ -1,9 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { signOut } from "firebase/auth"
 import { collection, addDoc, deleteDoc, doc, onSnapshot } from "firebase/firestore"
 import { auth,db } from "../config/firebase"
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef} from "react"
 const ChatApp = () => {
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState("")
@@ -21,7 +23,7 @@ const ChatApp = () => {
   const dummy:any = useRef<HTMLInputElement>()
 
   const messageCollectionRef = collection(db, "msgs")
-  
+
   const getMessages = () => {
     const unsubscribe = onSnapshot(messageCollectionRef,
       (snapshot) => {
@@ -84,7 +86,7 @@ const ChatApp = () => {
   }
   useEffect(() => {
     getMessages();
-  }, [])
+  }, [getMessages])
   return (
     <main className="h-[100vh]">
       <nav className="flex items-center justify-between py-[1.5rem] px-[3rem] pt-[1rem] gap-[1rem] w-[100%] text-white text-[35px]">
