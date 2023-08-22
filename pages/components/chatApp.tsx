@@ -9,7 +9,7 @@ const ChatApp = () => {
   const [input, setInput] = useState("")
   const [index, setIndex] = useState(null)
   const [counter, setCounter] = useState(1)
-  const bar = useRef()
+  const bar:any = useRef<HTMLInputElement>()
   console.log(input)
   const SignOut = async () => {
     try{
@@ -18,33 +18,19 @@ const ChatApp = () => {
       console.error(err)
     }
   }
-  const dummy = useRef()
-  const { uid, photoURL } = auth.currentUser
+  const dummy:any = useRef<HTMLInputElement>()
+
   const messageCollectionRef = collection(db, "msgs")
-  // const getMessages = async () => {
-  //   try{
-  //     const data = await getDocs(messageCollectionRef)
-  //     const filteredData = data.docs
-  //     .map((doc) => ({
-  //       ...doc.data(),
-  //       id: doc.id
-  //     }))
-  //     .sort((a, b) => a.createdAt - b.createdAt);
-  //     console.log(filteredData)
-  //     setMessages(filteredData)
-  //   } catch(err){
-  //     console.log(err)
-  //   }
-  // }; 
+  
   const getMessages = () => {
     const unsubscribe = onSnapshot(messageCollectionRef,
       (snapshot) => {
-        const filteredData = snapshot.docs
+        const filteredData:any = snapshot.docs
           .map((doc) => ({
             ...doc.data(),
             id: doc.id,
           }))
-          .sort((a, b) => a.createdAt - b.createdAt);
+          .sort((a:any, b:any) => a.createdAt - b.createdAt);
         setMessages(filteredData);
       },
       (error) => {
@@ -53,31 +39,39 @@ const ChatApp = () => {
     );
     return unsubscribe;
   }; 
-  const sendMessage = async (e) => {
-    setCounter(counter+1)
-    dummy.current.scrollIntoView({ behavior: 'smooth', block: 'end', offset: {top:200, left:0} });
-    e.preventDefault();
-    if(input.trim() === "" || input === null){
-      console.log("blank")
+  const sendMessage = async (e:any) => {
+    const user = auth.currentUser;
+    if (user) {
+      const { uid, photoURL } = user;
+      setCounter(counter+1)
+      dummy.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      e.preventDefault();
+      if(input.trim() === "" || input === null){
+        console.log("blank")
+      }
+      else{
+        try {
+          await addDoc(messageCollectionRef, {
+            message: input,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            uid,
+            photoURL,
+            index: counter
+          });
+        } catch (err) {
+          console.error(err);
+        }
+        getMessages();
+        const input2:any = document.getElementById("input")
+        input2.value = ""
+        setInput("")
+      }
     }
     else{
-      try {
-        await addDoc(messageCollectionRef, {
-          message: input,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          uid,
-          photoURL,
-          index: counter
-        });
-      } catch (err) {
-        console.error(err);
-      }
-      getMessages();
-      document.getElementById("input").value = ""
-      setInput("")
+      console.log("err")
     }
   };
-  const deleteMsg = async (id, index) => {
+  const deleteMsg = async (id:any, index:any) => {
     setIndex(index)
     try{
       const msg = doc(db, "msgs", id)
@@ -100,10 +94,10 @@ const ChatApp = () => {
         </button>
       </nav>
       <div className="h-[65vh] overflow-auto mb-[13rem] flex flex-col gap-[0.5rem] relative">
-        {messages.map((message) => (
+        {messages.map((message:any) => (
           <div key={message.id} className="flex flex-col relative">
             <div className={message.uid == auth.currentUser?.uid ? "flex flex-row-reverse items-center" : "flex flex-row items-center"}>
-              <p onDoubleClick={message.uid == auth.currentUser?.uid ? () => deleteMsg(message.id, message.index) : null} className={message.uid == auth.currentUser?.uid ? "cursor-pointer mr-[3rem] px-[1rem] py-[15px] bg-[rgba(168,85,247)] text-white w-fit text-[13px] self-end" : "mb-[0.5rem] text-[13px] overflow-y-auto cursor-pointer ml-[3rem] self-start px-[1rem] py-[15px] bg-[#e63946] text-white w-fit"}>{message.message}</p>
+              <p onDoubleClick={() => message.uid === auth.currentUser?.uid ? (e:any) => deleteMsg(message.id, message.index) : null} className={message.uid == auth.currentUser?.uid ? "cursor-pointer mr-[3rem] px-[1rem] py-[15px] bg-[rgba(168,85,247)] text-white w-fit text-[13px] self-end" : "mb-[0.5rem] text-[13px] overflow-y-auto cursor-pointer ml-[3rem] self-start px-[1rem] py-[15px] bg-[#e63946] text-white w-fit"}>{message.message}</p>
               <img src={message.photoURL || 'https://wallpapers-clan.com/wp-content/uploads/2022/12/anonymous-pfp-36.jpg'} alt="" width={50} className={message.uid == auth.currentUser?.uid ? "h-fit self-end border-[rgba(168,85,247)] border-[.134rem] mr-[10px] float-right" : "h-fit self-start border-[#e63946] border-[.134rem] ml-[10px] float-right"}/>
             </div>
           </div>
