@@ -20,7 +20,7 @@ import React from 'react'
 
 const firebase = () => {
   return (
-    <div>firebase</div>
+    <div></div>
   )
 }
 

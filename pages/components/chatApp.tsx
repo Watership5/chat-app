@@ -12,7 +12,6 @@ const ChatApp = () => {
   const [index, setIndex] = useState(null)
   const [counter, setCounter] = useState(1)
   const bar:any = useRef<HTMLInputElement>()
-  console.log(input)
   const SignOut = async () => {
     try{
       await signOut(auth)
