@@ -103,8 +103,8 @@ const ChatApp = () => {
         {messages.map((message) => (
           <div key={message.id} className="flex flex-col relative">
             <div className={message.uid == auth.currentUser?.uid ? "flex flex-row-reverse items-center" : "flex flex-row items-center"}>
-              <p onDoubleClick={() => deleteMsg(message.id, message.index)} className={message.uid == auth.currentUser?.uid ? "cursor-pointer mr-[3rem] px-[1rem] py-[15px] bg-[#4c956c] text-white w-fit text-[13px] self-end" : "mb-[0.5rem] text-[13px] overflow-y-auto cursor-pointer ml-[3rem] self-start px-[1rem] py-[15px] bg-[#e63946] text-white w-fit"}>{message.message}</p>
-              <img src={message.photoURL || 'https://wallpapers-clan.com/wp-content/uploads/2022/12/anonymous-pfp-36.jpg'} alt="" width={50} className={message.uid == auth.currentUser?.uid ? "h-fit self-end border-[#4c956c] border-[.134rem] mr-[10px] float-right" : "h-fit self-start border-[#e63946] border-[.134rem] ml-[10px] float-right"}/>
+              <p onDoubleClick={message.uid == auth.currentUser?.uid ? () => deleteMsg(message.id, message.index) : null} className={message.uid == auth.currentUser?.uid ? "cursor-pointer mr-[3rem] px-[1rem] py-[15px] bg-[rgba(168,85,247)] text-white w-fit text-[13px] self-end" : "mb-[0.5rem] text-[13px] overflow-y-auto cursor-pointer ml-[3rem] self-start px-[1rem] py-[15px] bg-[#e63946] text-white w-fit"}>{message.message}</p>
+              <img src={message.photoURL || 'https://wallpapers-clan.com/wp-content/uploads/2022/12/anonymous-pfp-36.jpg'} alt="" width={50} className={message.uid == auth.currentUser?.uid ? "h-fit self-end border-[rgba(168,85,247)] border-[.134rem] mr-[10px] float-right" : "h-fit self-start border-[#e63946] border-[.134rem] ml-[10px] float-right"}/>
             </div>
           </div>
         ))}
