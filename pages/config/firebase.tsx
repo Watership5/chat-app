@@ -15,3 +15,13 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const googleAuth = new GoogleAuthProvider()
 export const db = getFirestore(app)
+
+import React from 'react'
+
+const firebase = () => {
+  return (
+    <div>firebase</div>
+  )
+}
+
+export default firebase
